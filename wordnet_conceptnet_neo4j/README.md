@@ -1,4 +1,4 @@
-## origin repo for "ConceptNet and WordNet to Neo4j": https://github.com/tomkdickinson/wordnet_conceptnet_neo4j
+origin repo for "ConceptNet and WordNet to Neo4j": https://github.com/tomkdickinson/wordnet_conceptnet_neo4j
 
 # ConceptNet and WordNet to Neo4j
 
