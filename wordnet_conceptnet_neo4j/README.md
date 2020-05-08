@@ -1,3 +1,5 @@
+## origin repo for "ConceptNet and WordNet to Neo4j": https://github.com/tomkdickinson/wordnet_conceptnet_neo4j
+
 # ConceptNet and WordNet to Neo4j
 
 This script converts ConceptNet and WordNet into an integrated model, allowing search and expansion across both of
