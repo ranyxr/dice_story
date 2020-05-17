@@ -3,6 +3,8 @@ import csv
 import re
 import ray
 import multiprocessing
+import textacy
+import neuralcoref
 from functools import partial
 from tqdm import tqdm
 from itertools import chain
@@ -20,6 +22,7 @@ DELIMS = {
 
 PRONOUN_LIST = ['I', 'Me', 'We', 'You', 'He', 'She',
                 'It', 'Him', 'Her', 'Them', 'They']
+
 
 PRONOUNS = set(PRONOUN_LIST + [x.lower() for x in PRONOUN_LIST])
 
@@ -129,34 +132,56 @@ class Encoder(object):
             return ''
         return self.DELIMS['section'] + self.DELIMS[section] + text
 
+    @staticmethod
+    def extract_subject_verb_object_triples(doc):
+        lemma_triples = []
+        triples = textacy.extract.subject_verb_object_triples(doc)
+        for triple in triples:
+            _subject, _verb, _object = triple
+            _subject = _subject.root
+            _object = _object.root
+            _verb = _verb.root.lemma_
+            if _subject._.in_coref:
+                _subject = _subject._.coref_clusters[0].main.text
+            if _object._.in_coref:
+                _object = _object._.coref_clusters[0].main.text
+            lemma_triples.append((_subject, _verb, _object))
+        return lemma_triples
+
     def generate_encoded_text(self, row):
 
         nlp = self.nlp
+        if not nlp.has_pipe('neuralcoref'):
+            neuralcoref.add_to_pipe(nlp)
         pattern = self.pattern
         # replace smart quotes first for better tokenization
         text = re.sub(u'[\u2018\u2019]', "'",
                       (re.sub(u'[\u201c\u201d]', '"', row[self.keyword_gen])))
         doc = nlp(text)
 
+        # original version
         # category should be normalized to account for user input
         # category = re.sub(
         #     pattern, '-', row[self.category_field].lower().strip()) if self.category_field is not None else None
 
         # entity_relation, e.g. {relation: [entity1, entity2]}
         # relation is normally verb
-        entity_dependency_labels = ['nsubj', 'nsubjpass', 'csubj', 'csubjpass', 'obj', 'dobj', 'pobj']
-        modifier_labels = ['advmod', 'amod', 'appos', 'meta', 'nn']
-        relation_labels = ['ROOT', 'prep-x', 'agent', 'attr', 'cc', 'conj'] + modifier_labels
-        entity_relation_pairs = {}
-        for possible_entity in doc:
-            if possible_entity.pos == PRON:
-                continue
-            if possible_entity.dep_ in entity_dependency_labels and possible_entity.head.dep_ in relation_labels:
-                key = entity_relation_pairs.get(possible_entity.head.lemma_)
-                if not key:
-                    entity_relation_pairs[possible_entity.head.lemma_] = {possible_entity.lemma_}
-                else:
-                    key.add(possible_entity.lemma_)
+        # entity_dependency_labels = ['nsubj', 'nsubjpass', 'csubj', 'csubjpass', 'obj', 'dobj', 'pobj']
+        # modifier_labels = ['advmod', 'amod', 'appos', 'meta', 'nn']
+        # relation_labels = ['ROOT', 'prep-x', 'agent', 'attr', 'cc', 'conj'] + modifier_labels
+        # entity_relation_pairs = {}
+        # for possible_entity in doc:
+        #     if possible_entity.pos == PRON:
+        #         continue
+        #     if possible_entity.dep_ in entity_dependency_labels and possible_entity.head.dep_ in relation_labels:
+        #         key = entity_relation_pairs.get(possible_entity.head.lemma_)
+        #         if not key:
+        #             entity_relation_pairs[possible_entity.head.lemma_] = {possible_entity.lemma_}
+        #         else:
+        #             key.add(possible_entity.lemma_)
+
+        # triples of (subject, verb, object)
+        svo_triples = self.extract_subject_verb_object_triples(doc)
 
         title = row[self.title_field] if self.title_field is not None else None
         body = row[self.body_field] if self.body_field is not None else None
@@ -209,9 +234,10 @@ class Encoder(object):
             new_keywords = " ".join(new_keywords)
 
             encoded_texts.append(self.start_token +
-                                 self.build_section('entity_relation',
-                                                    str(entity_relation_pairs).strip('{}').
-                                                    replace("'", '').replace('{', '(').replace('}', ')') + ')') +
+                                 # self.build_section('entity_relation',
+                                 #                    str(entity_relation_pairs).strip('{}').
+                                 #                    replace("'", '').replace('{', '(').replace('}', ')') + ')') +
+                                 self.build_section('entity_relation', str(svo_triples).strip("[]").replace("'", '')) +
                                  self.build_section('keywords', new_keywords) +
                                  self.build_section('title', title) +
                                  self.build_section('body', body) +

@@ -1,5 +1,15 @@
+
+result with only keywords:
 <|startoftext|>~^diet food get a-few-weeks wonder years Jenny sister~@Diet~}I was always very thin and unhealthy. I wondered why. I tried going on a diet with only diet foods. I got so much better after a few weeks on the diet. Now I feel much better, and my sister wonders why.<|endoftext|>
+
+v1
 <|startoftext|>~`have: (Ben, test), drop: (book), score: (point), be: (Ben), win: (contest, Ben)~^Ben test a-way study~@tests~}Ben had a test coming up in high school. He dropped the book and started studying. He did well on the test and scored a point. Ben was the top scorer. Ben won the contest.<|endoftext|>
 <|startoftext|>~`be: (husband), go: (truck), break: (truck)~^water truck go~@The Broken Truck~}My husband and I were on our way to work. We went to get a water truck. The truck went over a hill. It broke. We had to get it fixed.<|endoftext|>
-<|startoftext|>~`love: (cat, Kate), drink: (beer, cola) ~^love cat moon wind beer~@The Beer~}Kate loved her cat. She thought it was a very cute cat. She decided to bring her cat to a bar to celebrate a new moon. The cat drank the cola. She was happy to have a new friend.
+
+v2
+<|startoftext|>~`(Tom, be, teacher), (Tom, have, cat), (cat, take, nap)~@The cat~}Tom is a teacher. Tom has a cat. Tom's cat takes a nap. Tom hears the cat snoring. Tom rushes over the cat to see what's wrong. Tom's cat took a nap on Tom's desk.
+<|startoftext|>~`(Tom, be, writer), (Tom, want, sex)~@Tom has a girlfriend~}Tom was a writer. He was a very good writer. Tom wanted to have a girlfriend. He went on a date. The date ended with Tom not wanting sex.
+<|startoftext|>~`(Tina, be, beautiful), (Tina, drink, beer), (Tina, be, singer), (cat, take, nap)~@Singing~}Tina was a singer. She was very beautiful. She was very talented. One day she got drunk and sang with no idea. A cat took a nap on her. She woke up feeling very sad.
+<|startoftext|>~`(Tina, be, beautiful), (Tina, drink, beer), (Tina, be, singer), (cat, take, nap)~@The Drunkest Cat~}Tina was a very popular waitress at a fast food place. Every day she was drinking beer, and singing to herself. One day she was drunk and couldn't think. Suddenly she heard a cat snoring in front of her. It was her cat and she was so drunk she couldn't think. She was so drunk she passed out and had to be rescued.
+<|startoftext|>~`(Tina, be, beautiful), (Tina, drink, beer), (Tina, be, singer), (cat, take, nap)~@The Cat~}Tina was very beautiful. She was a very good singer. She drank a lot of beer. She felt very good. Her cat took a nap. So she fell asleep.
 
