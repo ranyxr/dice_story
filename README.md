@@ -1,5 +1,5 @@
 # dice_story
-### Creative storytelling with knowledge graph
-Research on combining Knowledge Graph (KG) with Language Model (LM) for Natural Language Generation (NLG)
+### Creative storytelling with Language models and Knowledge Graphs
+Research on combining Knowledge Graphs (KG) with Language Models (LM) for Natural Language Generation (NLG)
 
-Research proposal: [Creative storytelling with KGs](./Thesis_Proposal_Xinran.pdf)
+Paper: [Creative storytelling with LMs and KGs](./DICE_story_workshop7.22.pdf)
